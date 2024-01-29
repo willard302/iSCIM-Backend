@@ -1,0 +1,13 @@
+[
+  { "name": "Balance Chakra", "idx": 0, "id": "Balance" },
+  { "name": "OverAll Chakra", "idx": 99, "id": "OverAll" },
+  { "name": "1. Root Chakra", "idx": 1, "id": "Root" },
+  { "name": "2. Sacral Chakra", "idx": 2, "id": "Sacral" },
+  { "name": "3. Navel Chakra", "idx": 3, "id": "Navel" },
+  { "name": "4. Waist Chakra", "idx": 4, "id": "Waist" },
+  { "name": "5. Solar Plexus Chakra", "idx": 5, "id": "Solar Plexus" },
+  { "name": "6. Heart Chakra", "idx": 6, "id": "Heart" },
+  { "name": "7. Pineal Chakra", "idx": 7, "id": "Pineal" },
+  { "name": "8. Third Eye Chakra", "idx": 8, "id": "Third Eye" },
+  { "name": "9. Crown Chakra", "idx": 9, "id": "Crown" }
+]

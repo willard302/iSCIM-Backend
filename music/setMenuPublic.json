@@ -1,0 +1,45 @@
+[
+  {
+    "id":"1",
+    "amount":8,
+    "Chtitle":"睡眠30分鐘後甦醒",
+    "Entitle":"Sleep 30min and Waking",
+    "intro":"Sleep 30min and Waking",
+    "content": [
+      "Relaxed Theta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Focused Alpha",
+      "Focused Beta"
+    ],
+    "chakra":[],
+    "newSet": false
+  },
+  {
+    "id":"2",
+    "amount":8,
+    "Chtitle":"90分鐘睡眠循環",
+    "Entitle":"90min Sleep Cycle",
+    "intro":"Sleep 30min and Waking",
+    "content": [
+      "Relaxed Theta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Relaxed L-Delta",
+      "Relaxed H-Delta",
+      "Relaxed Theta"
+    ],
+    "chakra":[],
+    "newSet": false
+  }
+]
