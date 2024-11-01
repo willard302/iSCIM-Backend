@@ -1,0 +1,32 @@
+{
+  "level": "Premium Member",
+  "iPoint": "9999999",
+  "avatar": "",
+  "name": "流川楓",
+  "gender": "Male",
+  "birthdate": "1990-03-25",
+  "phone": "0911222333",
+  "email": "iscim666@gmail.com",
+  "country": "Taiwan",
+  "city": "Taipei",
+  "geo": "25.04, 121.56",
+  "invitationCode": "iscim168168",
+  "inviataionLink": "https://iscim666-e303d.web.app?iscim_code=iscim168168&openExternalBrowser=1",
+  "cosmos": {
+    "numbers": {
+      "chart": [
+        "Five Traits Ratio"
+      ],
+      "crash": "Medium",
+      "hesitation": "High"
+    },
+    "fiveElements": {
+      "chart": [
+        "Aura",
+        "Five Traits Ratio",
+        "RECI Ratio"
+      ]
+    }
+  },
+  "musicTherapy": false
+}
