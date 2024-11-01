@@ -1,32 +1,69 @@
-{
-  "level": "Premium Member",
-  "iPoint": "9999999",
-  "avatar": "",
-  "name": "流川楓",
-  "gender": "Male",
-  "birthdate": "1990-03-25",
-  "phone": "0911222333",
-  "email": "iscim666@gmail.com",
-  "country": "Taiwan",
-  "city": "Taipei",
-  "geo": "25.04, 121.56",
-  "invitationCode": "iscim168168",
-  "inviataionLink": "https://iscim666-e303d.web.app?iscim_code=iscim168168&openExternalBrowser=1",
-  "cosmos": {
-    "numbers": {
-      "chart": [
-        "Five Traits Ratio"
-      ],
-      "crash": "Medium",
-      "hesitation": "High"
+[
+  {
+    "id": "00002",
+    "level": "Member",
+    "iPoint": "88888888",
+    "avatar": "",
+    "name": "櫻木花道",
+    "gender": "Male",
+    "birthdate": "Sun Mar 25 1990 02:00:00 GMT+0800 (台北標準時間)",
+    "phone": "0988222888",
+    "email": "iscim111@gmail.com",
+    "country": "Taiwan",
+    "city": "Taipei",
+    "geo": "25.04, 121.56",
+    "invitationCode": "iscim168168",
+    "inviataionLink": "https://iscim666-e303d.web.app?iscim_code=iscim168168&openExternalBrowser=1",
+    "cosmos": {
+      "numbers": {
+        "chart": [
+          "Numbers.crash_hesitation",
+          "Numbers.body_mind_spirit"
+        ],
+        "crash": "Medium",
+        "hesitation": "High"
+      },
+      "fiveElements": {
+        "chart": [
+          "Five_Elements.aura",
+          "Five_Elements.five_traits",
+          "Five_Elements.reci"
+        ]
+      }
     },
-    "fiveElements": {
-      "chart": [
-        "Aura",
-        "Five Traits Ratio",
-        "RECI Ratio"
-      ]
-    }
+    "musicTherapy": false
   },
-  "musicTherapy": false
-}
+  {
+    "id": "00001",
+    "level": "Premium Member",
+    "iPoint": "9999999",
+    "avatar": "",
+    "name": "流川",
+    "gender": "Male",
+    "birthdate": "1990-03-24T20:00:00.000Z",
+    "phone": "0911222333",
+    "email": "iscim@gmail.com",
+    "country": "Sweden",
+    "city": "Abborrberget",
+    "geo": "25.04, 121.56",
+    "invitationCode": "iscim168168",
+    "inviataionLink": "https://iscim666-e303d.web.app?iscim_code=iscim168168&openExternalBrowser=1",
+    "cosmos": {
+      "numbers": {
+        "chart": [
+          "Five Traits Ratio"
+        ],
+        "crash": "Medium",
+        "hesitation": "High"
+      },
+      "fiveElements": {
+        "chart": [
+          "Aura",
+          "Five Traits Ratio",
+          "RECI Ratio"
+        ]
+      }
+    },
+    "musicTherapy": false
+  }
+]

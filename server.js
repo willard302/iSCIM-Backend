@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -103,11 +104,35 @@ const users = [
 
 const activeTokens = new Set();
 
+app.post("/api/register", (req, res) => {
+  const newUser = req.body;
+
+  fs.readFile('user.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('load failed', err);
+      return res.status(500).json({error: 'cannot read'});
+    }
+
+    let users = JSON.parse(data);
+
+    users.push(newUser);
+
+    fs.writeFile('user.json', JSON.stringify(users, null, 2), 'utf8', (err) => {
+      if (err) {
+        console.error('write failed: ', err);
+        return res.status(500).json({error: 'cannot write'});
+      };
+      res.status(201).json({message: 'write succeeded'})
+    })
+  });
+})
+
 app.post("/api/login", (req, res) => {
   const { account, password } = req.body;
   const user = users.find(
     (u) => u.account === account && u.password === password
   );
+
   if (user) {
     const token = "636b6030-3ee3-11eb-b378-0242ac130002";
     activeTokens.add(token);
@@ -116,7 +141,6 @@ app.post("/api/login", (req, res) => {
       name: user.name,
       token,
     });
-    console.log(activeTokens)
   } else {
     res.json({
       status: false,
@@ -146,7 +170,25 @@ app.get("/api/account", (req, res) => {
 })
 
 app.put("/api/account", (req, res) => {
-  const updatedData = req.body;
+  const newData = req.body;
+  fs.readFile('user.json', 'utf8', (err, data) => {
+    if (err) return res.status(500).json({message: '無法讀取'});
+    let userList = JSON.parse(data);
+    userList.forEach((item, idx) => {
+      if (item.email === newData.email) {
+        userList[idx] = newData
+      }
+    })
+
+    console.log(userList)
+    fs.writeFile('user.json', JSON.stringify(userList, null, 2), 'utf8', err => {
+      if (err) {
+        console.error('load failed: ', err);
+        return res.status(500).json({message: '無法更新資料'});
+      }
+      res.json({message: '更新資料成功'})
+    })
+  })
 
   // if (!updatedData || !updatedData.id) {
   //   return res.status(400).json({message: 'Invalid data'})
@@ -370,10 +412,6 @@ app.put("/api/account", (req, res) => {
 //     return;
 //   }
 //   res.json(productList);
-// });
-
-// app.get("/user/info", (req, res) => {
-//   return res.json(userInfo)
 // });
 
 // app.get("/members/list", (req, res) => {
