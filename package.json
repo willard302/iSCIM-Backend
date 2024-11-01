@@ -1,5 +1,5 @@
 {
-  "name": "vue-lessons-api",
+  "name": "iscim-backend",
   "version": "0.0.0",
   "main": "server.js",
   "engines": {
