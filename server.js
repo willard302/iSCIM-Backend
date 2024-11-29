@@ -12,6 +12,7 @@ const filterTag = require("./filterTag.json");
 const productList = require("./productList.json");
 const userInfo = require("./user.json");
 const memberLists = require("./members.json");
+const multer = require('multer');
 
 const { PORT = 9527, HOST = "localhost" } = process.env;
 
@@ -196,6 +197,50 @@ app.put("/api/account", (req, res) => {
 
   // userInfo = {...userInfo, ...updatedData}
   // return res.status(200).json({message: 'Data updated successfully', data: userInfo});
+});
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = path.basename(file.originalname, ext);
+    cb(null, `${name}-${Date.now()}${ext}`)
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const mimeTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/mkv'];
+    if (mimeTypes.includes(file.mimetype)){
+      cb(null, true);
+    } else {
+      cb (new Error("文件類型不支持"))
+    }
+  }
+});
+
+app.post("/api/upload", (req, res) => {
+  console.log('req   ', req)
+  try {
+    res.status(200).json({
+      message: 'video upload successful.',
+      filePath: `/uploads/${req.file.filename}`
+    });
+  } catch (error) {
+    res.status(400).json({message: error.message});
+  }
+});
+
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    res.status(400).json({message: `上傳錯誤：${err.message}`});
+  } else {
+    res.status(400).json({message: err.message})
+  }
 })
 
 // app.post("/auth/login", (req, res) => {
