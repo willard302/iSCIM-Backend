@@ -1,13 +1,13 @@
 {
   "name": "iscim-backend",
   "version": "0.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "engines": {
     "node": "18.x"
   },
   "scripts": {
-    "start": "node server.js",
-    "build": "node server.js"
+    "start": "node index.js",
+    "build": "node index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -21,5 +21,13 @@
   },
   "description": "適用課程 - 現代 JavaScript 職人之路｜中階實戰篇 - Vue3 專業職人 | 入門篇 - Vue3 專業職人 | 進階篇 - 精通 VueJS 前端開發完全指南 - React 完全精通 - 從原理到大量實戰應用",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willard302/iSCIM-Backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/willard302/iSCIM-Backend/issues"
+  },
+  "homepage": "https://github.com/willard302/iSCIM-Backend#readme"
 }
