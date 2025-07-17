@@ -14,14 +14,12 @@
     "cors": "^2.8.4",
     "dotenv": "^17.2.0",
     "express": "^4.21.1",
-    "lodash": "^4.17.21",
-    "multer": "^1.4.5-lts.1",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "@vercel/node": "^2.8.0"
   },
-  "description": "適用課程 - 現代 JavaScript 職人之路｜中階實戰篇 - Vue3 專業職人 | 入門篇 - Vue3 專業職人 | 進階篇 - 精通 VueJS 前端開發完全指南 - React 完全精通 - 從原理到大量實戰應用",
+  "description": "",
   "author": "",
   "license": "ISC",
   "repository": {
@@ -31,5 +29,6 @@
   "bugs": {
     "url": "https://github.com/willard302/iSCIM-Backend/issues"
   },
-  "homepage": "https://github.com/willard302/iSCIM-Backend#readme"
+  "homepage": "https://github.com/willard302/iSCIM-Backend#readme",
+  "keywords": []
 }
