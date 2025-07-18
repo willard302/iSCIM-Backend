@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const _ = require("lodash");
 const { Pool } = require("pg")
 const { PORT = 9527, HOST = "localhost" } = process.env;
 
