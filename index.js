@@ -3,6 +3,8 @@ const path = require("path");
 const { Pool } = require("pg")
 const { PORT = 9527, HOST = "localhost" } = process.env;
 
+require("dotenv").config();
+
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
@@ -19,12 +21,10 @@ pool.connect()
   .then(() => console.log("PostgreSQL connected"))
   .catch(err => console.error("PostgreSQL connection error", err));
 
-require("dotenv").config();
-
-app.get("/users", async(req, res) => {
+app.get(`/users/${table_name}`, async(req, res) => {
   try {
-    const result = await pool.query("Select * From users")
-    res.json(result.rows)
+    const result = await pool.query(`Select * From ${table_name}`);
+    res.json(result.rows);
   } catch (error) {
     res.status(500).send("Database error")
   }
