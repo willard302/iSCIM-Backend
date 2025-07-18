@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const tool = require("../db")
+const pool = require("../db.js")
 
 pool.query(`
   CREATE TABLE IF NOT EXISTS users (

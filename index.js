@@ -1,25 +1,36 @@
-require("dotenv").config
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
-const usersRouter = require("./routes/user.js");
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
+const _ = require("lodash");
+const { Pool } = require("pg")
+const { PORT = 9527, HOST = "localhost" } = process.env;
 
-app.use(express.json())
-app.use("/users", usersRouter)
+const app = express();
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: "200kb" }));
+app.use(cors());
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+pool.connect()
+  .then(() => console.log("PostgreSQL connected"))
+  .catch(err => console.error("PostgreSQL connection error", err));
+
+require("dotenv").config();
 
 app.get("/users", async(req, res) => {
-  const result = await pool.query("SELECT * FROM users")
-  res.json(result.rows)
-})
+  try {
+    const result = await pool.query("Select * From users")
+    res.json(result.rows)
+  } catch (error) {
+    res.status(500).send("Database error")
+  }
+});
 
-app.get('/', (req, res) => {
-  res.send('Hello from Render Node.js Express API!')
-})
-
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hi there! This is your API response.' })
-})
-
-app.listen(port, () => {
-  console.log(`API is running at http://localhost:${port}`)
-})
+app.listen(PORT, () => console.log(`app started at http://${HOST}:${PORT}`));
