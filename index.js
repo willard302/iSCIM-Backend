@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const cors = require("cors");
 const _ = require("lodash");
 const { Pool } = require("pg")
 const { PORT = 9527, HOST = "localhost" } = process.env;
@@ -9,7 +8,6 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
-app.use(cors());
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
