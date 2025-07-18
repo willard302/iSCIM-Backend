@@ -6,9 +6,14 @@ const { PORT = 9527, HOST = "localhost" } = process.env;
 require("dotenv").config();
 
 const app = express();
-app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
+
+// 加入 CORS header
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+})
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
