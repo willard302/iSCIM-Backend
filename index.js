@@ -7,7 +7,7 @@ const usersRouter = require("./routes/users")
 app.use(express.json())
 app.use("/users", usersRouter)
 
-app.get("users", async(req, res) => {
+app.get("/users", async(req, res) => {
   const result = await pool.query("SELECT * FROM users")
   res.json(result.rows)
 })
