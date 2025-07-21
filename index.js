@@ -9,12 +9,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
 
-// 加入 CORS header
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  next();
-})
-
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
