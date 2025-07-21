@@ -25,12 +25,13 @@ pool.connect()
   .then(() => console.log("PostgreSQL connected"))
   .catch(err => console.error("PostgreSQL connection error", err));
 
-app.get("/users", async(req, res) => {
+app.get("/users", async (req, res) => {
   try {
-    const result = await pool.query("Select * From users");
-    res.json(result.rows);
+    const { rows } = await pool.query("SELECT * FROM users");
+    res.json(rows);
   } catch (error) {
-    res.status(500).send("Database error")
+    console.error('Database error:', error);
+    res.status(500).send("Database error");
   }
 });
 
