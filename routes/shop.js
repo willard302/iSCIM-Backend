@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
-
-
 const axios = require('axios');
 
 // 取得所有商品
