@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-// 模擬商品資料
-const products = [
-  { id: 1, name: '商品A', price: 100 },
-  { id: 2, name: '商品B', price: 200 },
-  { id: 3, name: '商品C', price: 300 }
-];
+
+
+const axios = require('axios');
 
 // 取得所有商品
-router.get('/products', (req, res) => {
-  res.json(products);
+router.get('/products', async (req, res) => {
+  try {
+    const response = await axios.get('/products');
+    res.json(response.data);
+  } catch (error) {
+    console.error('取得商品資料錯誤:', error);
+    res.status(500).json({ error: '無法取得商品資料' });
+  }
 });
 
 // 取得單一商品
