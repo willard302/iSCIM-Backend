@@ -18,11 +18,11 @@ app.options('*', cors());
 
 // 路由
 const productRouter = require('./routes/products');
-// const accountRouter = require('./routes/auth');
-const userRouter = require('./routes/users');
+// const authRouter = require('./routes/auth');
+// const userRouter = require('./routes/users');
 app.use('/products', productRouter);
-// app.use('/auth', accountRouter);
-app.use('/users', userRouter)
+// app.use('/auth', authRouter);
+// app.use('/users', userRouter)
 
 const isDev = process.env.NODE_ENV === "production";
 
