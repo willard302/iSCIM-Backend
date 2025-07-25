@@ -8,13 +8,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
 
-app.use(cors({
+const corsOptions = {
   origin: "*",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}));
+}
 
-// app.options('*', cors());
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
 
 // 路由
 const productRouter = require('./routes/products');
