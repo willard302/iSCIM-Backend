@@ -17,10 +17,10 @@ app.use(cors({
 app.options('*', cors());
 
 // 路由
-const productRouter = require('./routes/products');
+// const productRouter = require('./routes/products');
 // const authRouter = require('./routes/auth');
 // const userRouter = require('./routes/users');
-app.use('/products', productRouter);
+// app.use('/products', productRouter);
 // app.use('/auth', authRouter);
 // app.use('/users', userRouter)
 
