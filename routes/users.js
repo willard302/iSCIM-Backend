@@ -10,7 +10,7 @@ pool.query(`
   );
 `);
 
-app.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { rows } = await pool.query("SELECT * FROM users");
     res.json(rows);
