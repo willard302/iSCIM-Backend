@@ -17,12 +17,12 @@ app.use(express.urlencoded({ extended: true, limit: "200kb" }));
 // app.options('*', cors());
 
 // 路由
-// const productRouter = require('./routes/products');
-// const authRouter = require('./routes/auth');
-// const userRouter = require('./routes/users');
-// app.use('/products', productRouter);
-// app.use('/auth', authRouter);
-// app.use('/users', userRouter)
+const productRouter = require('./routes/products');
+const authRouter = require('./routes/auth');
+const userRouter = require('./routes/users');
+app.use('/products', productRouter);
+app.use('/auth', authRouter);
+app.use('/users', userRouter)
 
 const isDev = process.env.NODE_ENV === "production";
 
