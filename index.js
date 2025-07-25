@@ -1,31 +1,23 @@
 const express = require("express");
-const { Pool } = require("pg")
-const { PORT = 9527, HOST = "localhost" } = process.env;
-
+const pool = require("./db");
 require("dotenv").config();
+
+const { PORT = 3000 } = process.env;
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
 
-const shopRouter = require('./routes/shop');
-app.use('/shop', shopRouter);
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
-})
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
 });
 
-pool.connect()
-  .then(() => console.log("PostgreSQL connected"))
-  .catch(err => console.error("PostgreSQL connection error", err));
+// 路由
+const productRouter = require('./routes/products');
+const accountRouter = require('./routes/accounts');
+app.use('/products', productRouter);
+app.use('/accounts', accountRouter);
 
 app.get("/users", async (req, res) => {
   try {
