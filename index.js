@@ -29,4 +29,4 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`app started at http://${HOST}:${PORT}`));
+app.listen(PORT, () => console.log(`✅ App started on port ${PORT}`));
