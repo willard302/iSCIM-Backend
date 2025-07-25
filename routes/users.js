@@ -29,7 +29,7 @@ router.post("/", async(req, res) => {
   res.status(201).json(result.rows[0])
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params
   await pool.query('DELETE FROM users WHERE id = $1', [id])
   res.sendStatus(204)

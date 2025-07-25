@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require('../db');
 
 // 取得所有商品
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { rows } = await pool.query('SELECT * FROM products');
     res.json(rows);
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // 取得單一商品
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
