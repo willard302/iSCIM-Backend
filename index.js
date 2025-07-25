@@ -16,17 +16,12 @@ app.use((req, res, next) => {
 // 路由
 const productRouter = require('./routes/products');
 const accountRouter = require('./routes/accounts');
+const userRouter = require('./routes/users');
 app.use('/products', productRouter);
 app.use('/accounts', accountRouter);
+app.use('/users', userRouter)
 
-app.get("/users", async (req, res) => {
-  try {
-    const { rows } = await pool.query("SELECT * FROM users");
-    res.json(rows);
-  } catch (error) {
-    console.error('Database error:', error);
-    res.status(500).send("Database error");
-  }
-});
+const isDev = process.env.NODE_ENV === "production";
 
-app.listen(PORT, () => console.log(`✅ App started on port ${PORT}`));
+app.listen(PORT, () => console.log( 
+  isDev ? `🧪 Dev server running at http://localhost:${PORT}` : `✅ Server running on port ${PORT}`));
