@@ -1,5 +1,4 @@
 const express = require("express");
-const pool = require("./db");
 require("dotenv").config();
 
 const { PORT = process.env.PORT } = process.env;
@@ -15,10 +14,10 @@ app.use((req, res, next) => {
 
 // 路由
 const productRouter = require('./routes/products');
-const accountRouter = require('./routes/accounts');
+const accountRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 app.use('/products', productRouter);
-app.use('/accounts', accountRouter);
+app.use('/auth', accountRouter);
 app.use('/users', userRouter)
 
 const isDev = process.env.NODE_ENV === "production";

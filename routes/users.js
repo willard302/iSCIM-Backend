@@ -10,7 +10,7 @@ pool.query(`
   );
 `);
 
-app.get("/users", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const { rows } = await pool.query("SELECT * FROM users");
     res.json(rows);
@@ -19,11 +19,6 @@ app.get("/users", async (req, res) => {
     res.status(500).send("Database error");
   }
 });
-
-router.get("/", async(req, res) => {
-  const result = await pool.query('SELECT * FROM users')
-  res.json(result.rows)
-})
 
 router.post("/", async(req, res) => {
   const { name, email} = req.body
