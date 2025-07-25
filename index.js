@@ -1,5 +1,6 @@
 const express = require("express");
 require("dotenv").config();
+const cors = require("cors");
 
 const { PORT = process.env.PORT } = process.env;
 
@@ -7,10 +8,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
+app.use(cors({
+  origin: "*",
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.options('*', cors());
 
 // 路由
 const productRouter = require('./routes/products');
