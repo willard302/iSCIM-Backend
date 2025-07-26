@@ -33,26 +33,28 @@ router.post('/register', async (req, res) => {
       );
       const authId = authResult.rows[0].id;
 
-      await client.query(
-        'INSERT INTO users (email) VALUES ($1) returning id, email',
+      const userResult = await client.query(
+        'INSERT INTO users (name, email) VALUES ($1, $1) RETURNING id, name, email',
         [username]
-      )
+      );
+
+      await client.query('COMMIT');
+      res.status(201).json({
+        message: '註冊成功',
+        user: {
+          auth: authResult.rows[0],
+          profile: userResult.rows[0],
+        }
+      });
 
     } catch (error) {
+      await client.query('ROLLBACK');
       console.error('註冊錯誤:', error);
+      res.status(500).json({ error: '伺服器錯誤' });
+    } finally {
+      client.release();
     }
 
-    
-
-    pool.query(
-      'INSERT INTO users (name, email) VALUES ($1, $1)',
-      [username]
-    );
-
-    res.status(201).json({
-      message: '註冊成功',
-      user: result.rows[0]
-    });
   } catch (error) {
     console.error('註冊錯誤:', error);
     res.status(500).json({ error: '伺服器錯誤' })
