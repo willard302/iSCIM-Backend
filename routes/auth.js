@@ -31,7 +31,6 @@ router.post('/register', async (req, res) => {
         'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
         [username, hashedPassword]
       );
-      const authId = authResult.rows[0].id;
 
       const userResult = await client.query(
         'INSERT INTO users (name, email) VALUES ($1, $1) RETURNING id, name, email',
