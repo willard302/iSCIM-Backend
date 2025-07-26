@@ -16,8 +16,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.options('*', cors(corsOptions));
-
 // 路由
 const productRouter = require('./routes/products');
 const authRouter = require('./routes/auth');

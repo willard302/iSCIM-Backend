@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
 
   try {
     const checkUser = await pool.query(
-      'SELECT * FROM auth WHERE username = $1',
+      'SELECT * FROM auth WHERE username = $1 OR email = $1',
       [username]
     );
 
@@ -23,15 +23,36 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await pool.query(
-      'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
-      [username, hashedPassword]
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      const authResult = await client.query(
+        'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
+        [username, hashedPassword]
+      );
+      const authId = authResult.rows[0].id;
+
+      await client.query(
+        'INSERT INTO users (email) VALUES ($1) returning id, email',
+        [username]
+      )
+
+    } catch (error) {
+      console.error('註冊錯誤:', error);
+    }
+
+    
+
+    pool.query(
+      'INSERT INTO users (name, email) VALUES ($1, $1)',
+      [username]
     );
 
     res.status(201).json({
       message: '註冊成功',
       user: result.rows[0]
-    })
+    });
   } catch (error) {
     console.error('註冊錯誤:', error);
     res.status(500).json({ error: '伺服器錯誤' })
