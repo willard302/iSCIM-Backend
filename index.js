@@ -15,7 +15,7 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // ← 明確告訴 Express 處理所有 OPTIONS 預檢請求
+app.options('/*', cors(corsOptions)); // ← 明確告訴 Express 處理所有 OPTIONS 預檢請求
 
 
 // 路由
