@@ -32,11 +32,6 @@ router.post('/register', async (req, res) => {
         [username, hashedPassword]
       );
 
-      const userResult = await client.query(
-        'INSERT INTO users (name, email) VALUES ($1, $1) RETURNING id, name, email',
-        [username]
-      );
-
       await client.query('COMMIT');
       res.status(201).json({
         message: '註冊成功',
