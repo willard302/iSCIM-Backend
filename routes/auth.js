@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const authResult = await client.query(
-      'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
+      'INSERT INTO auth (username, password) VALUES ($1, $2)',
       [username, hashedPassword]
     );
 
