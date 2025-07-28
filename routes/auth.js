@@ -27,9 +27,14 @@ router.post('/register', async (req, res) => {
       await pool.query('BEGIN');
 
       const authResult = await pool.query(
-        'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
+        'INSERT INTO auth (username, password) VALUES ($1, $2)',
         [username, hashedPassword]
       );
+
+      await pool.query(
+        'INSERT INTO users (email) VALUES ($1)',
+        [username]
+      )
 
       await pool.query('COMMIT');
       res.status(201).json({
