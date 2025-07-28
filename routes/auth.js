@@ -22,11 +22,15 @@ router.post('/register', async (req, res) => {
     };
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    
+    await client.query("BEGIN");
 
     const authResult = await client.query(
       'INSERT INTO auth (username, password) VALUES ($1, $2)',
       [username, hashedPassword]
     );
+
+    await client.query("COMMIT");
 
     res.status(201).json({
       message: '註冊成功',
