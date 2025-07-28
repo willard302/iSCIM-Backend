@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
 
   try {
     const checkUser = await pool.query(
-      'SELECT * FROM auth WHERE username = $1 OR email = $1',
+      'SELECT * FROM auth WHERE username = $1',
       [username]
     );
 
