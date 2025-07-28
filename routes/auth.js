@@ -12,51 +12,47 @@ router.post('/register', async (req, res) => {
   };
 
   try {
+    await pool.query('BEGIN');
+
     const checkUser = await pool.query(
       'SELECT * FROM auth WHERE username = $1',
       [username]
     );
 
     if (checkUser.rows.length > 0) {
+      await pool.query("ROLLBACK")
       return res.status(409).json({ error: '使用者已存在' });
     };
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    try {
-      await pool.query('BEGIN');
+    const authResult = await pool.query(
+      'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id',
+      [username, hashedPassword]
+    );
+    const authUser = authResult.rows[0];
 
-      const authResult = await pool.query(
-        'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id',
-        [username, hashedPassword]
-      );
+    await pool.query(
+      'INSERT INTO users (id, email) VALUES ($1, $2)',
+      [authUser.id, username]
+    )
 
-      const userResult = authResult.rows[0];
+    await pool.query('COMMIT');
 
-      await pool.query(
-        'INSERT INTO users (id, email) VALUES ($1, $2)',
-        [userResult.id, username]
-      )
-
-      await pool.query('COMMIT');
-      res.status(201).json({
-        message: '註冊成功',
-        user: {
-          auth: userResult
-        }
-      });
-
-    } catch (error) {
-      await pool.query('ROLLBACK');
-      console.error('註冊錯誤:', error);
-      res.status(500).json({ error: '伺服器錯誤' });
-    } finally {
-      pool.release();
-    }
+    res.status(201).json({
+      message: '註冊成功',
+      user: {
+        auth: authUser,
+        username
+      }
+    });
 
   } catch (error) {
+    await pool.query('ROLLBACK');
     console.error('註冊錯誤:', error);
     res.status(500).json({ error: '伺服器錯誤' })
+  } finally {
+    pool.release();
   }
 })
 
