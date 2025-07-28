@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 
-router.post('/joinus', async (req, res) => {
+router.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -23,14 +23,14 @@ router.post('/joinus', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    await client.query("BEGIN");
+    await pool.query("BEGIN");
 
-    const authResult = await client.query(
+    const authResult = await pool.query(
       'INSERT INTO auth (username, password) VALUES ($1, $2)',
       [username, hashedPassword]
     );
 
-    await client.query("COMMIT");
+    await pool.query("COMMIT");
 
     res.status(201).json({
       message: '註冊成功',
@@ -42,12 +42,12 @@ router.post('/joinus', async (req, res) => {
 
     // try {
 
-    //   const authResult = await client.query(
+    //   const authResult = await pool.query(
     //     'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
     //     [username, hashedPassword]
     //   );
 
-    //   await client.query('COMMIT');
+    //   await pool.query('COMMIT');
     //   res.status(201).json({
     //     message: '註冊成功',
     //     user: {
@@ -57,11 +57,11 @@ router.post('/joinus', async (req, res) => {
     //   });
 
     // } catch (error) {
-    //   await client.query('ROLLBACK');
+    //   await pool.query('ROLLBACK');
     //   console.error('註冊錯誤:', error);
     //   res.status(500).json({ error: '伺服器錯誤' });
     // } finally {
-    //   client.release();
+    //   pool.release();
     // }
 
   } catch (error) {
