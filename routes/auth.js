@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
 
   try {
     const checkUser = await pool.query(
-      'SELECT * FROM auth WHERE username = $1',
+      'SELECT * FROM auth WHERE username = $1 OR email = $1',
       [username]
     );
 
@@ -22,47 +22,30 @@ router.post('/register', async (req, res) => {
     };
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    
-    await pool.query("BEGIN");
 
-    const authResult = await pool.query(
-      'INSERT INTO auth (username, password) VALUES ($1, $2)',
-      [username, hashedPassword]
-    );
+    try {
+      await pool.query('BEGIN');
 
-    await pool.query("COMMIT");
+      const authResult = await pool.query(
+        'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
+        [username, hashedPassword]
+      );
 
-    res.status(201).json({
-      message: '註冊成功',
-      user: {
-        auth: authResult.rows[0],
-        profile: userResult.rows[0],
-      }
-    });
+      await pool.query('COMMIT');
+      res.status(201).json({
+        message: '註冊成功',
+        user: {
+          auth: authResult.rows[0]
+        }
+      });
 
-    // try {
-
-    //   const authResult = await pool.query(
-    //     'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
-    //     [username, hashedPassword]
-    //   );
-
-    //   await pool.query('COMMIT');
-    //   res.status(201).json({
-    //     message: '註冊成功',
-    //     user: {
-    //       auth: authResult.rows[0],
-    //       profile: userResult.rows[0],
-    //     }
-    //   });
-
-    // } catch (error) {
-    //   await pool.query('ROLLBACK');
-    //   console.error('註冊錯誤:', error);
-    //   res.status(500).json({ error: '伺服器錯誤' });
-    // } finally {
-    //   pool.release();
-    // }
+    } catch (error) {
+      await pool.query('ROLLBACK');
+      console.error('註冊錯誤:', error);
+      res.status(500).json({ error: '伺服器錯誤' });
+    } finally {
+      pool.release();
+    }
 
   } catch (error) {
     console.error('註冊錯誤:', error);
