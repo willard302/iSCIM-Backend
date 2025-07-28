@@ -27,20 +27,22 @@ router.post('/register', async (req, res) => {
       await pool.query('BEGIN');
 
       const authResult = await pool.query(
-        'INSERT INTO auth (username, password) VALUES ($1, $2)',
+        'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id',
         [username, hashedPassword]
       );
 
+      const userResult = authResult.rows[0];
+
       await pool.query(
-        'INSERT INTO users (email) VALUES ($1)',
-        [username]
+        'INSERT INTO users (id, email) VALUES ($1, $2)',
+        [userResult.id, username]
       )
 
       await pool.query('COMMIT');
       res.status(201).json({
         message: '註冊成功',
         user: {
-          auth: authResult.rows[0]
+          auth: userResult
         }
       });
 
