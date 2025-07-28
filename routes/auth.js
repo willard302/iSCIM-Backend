@@ -23,31 +23,42 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const client = await pool.connect();
-    try {
-      await client.query('BEGIN');
+    const authResult = await client.query(
+      'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
+      [username, hashedPassword]
+    );
 
-      const authResult = await client.query(
-        'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
-        [username, hashedPassword]
-      );
+    res.status(201).json({
+      message: '註冊成功',
+      user: {
+        auth: authResult.rows[0],
+        profile: userResult.rows[0],
+      }
+    });
 
-      await client.query('COMMIT');
-      res.status(201).json({
-        message: '註冊成功',
-        user: {
-          auth: authResult.rows[0],
-          profile: userResult.rows[0],
-        }
-      });
+    // try {
 
-    } catch (error) {
-      await client.query('ROLLBACK');
-      console.error('註冊錯誤:', error);
-      res.status(500).json({ error: '伺服器錯誤' });
-    } finally {
-      client.release();
-    }
+    //   const authResult = await client.query(
+    //     'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id, username',
+    //     [username, hashedPassword]
+    //   );
+
+    //   await client.query('COMMIT');
+    //   res.status(201).json({
+    //     message: '註冊成功',
+    //     user: {
+    //       auth: authResult.rows[0],
+    //       profile: userResult.rows[0],
+    //     }
+    //   });
+
+    // } catch (error) {
+    //   await client.query('ROLLBACK');
+    //   console.error('註冊錯誤:', error);
+    //   res.status(500).json({ error: '伺服器錯誤' });
+    // } finally {
+    //   client.release();
+    // }
 
   } catch (error) {
     console.error('註冊錯誤:', error);
