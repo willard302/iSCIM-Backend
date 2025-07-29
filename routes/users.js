@@ -10,9 +10,10 @@ pool.query(`
   );
 `);
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const { rows } = await pool.query("SELECT * FROM users");
+    const { id } = req.params;
+    const { rows } = await pool.query("SELECT * FROM users", [id]);
     res.json(rows);
   } catch (error) {
     console.error('Database error:', error);
@@ -20,12 +21,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async(req, res) => {
-  const { name, email} = req.body
+router.post("/:id", async(req, res) => {
+  const { id } = req.params;
+  const { info } = req.body
   const result = await pool.query(
-    'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
-    [name, email]
-  )
+    'UPDATE users SET info = $1 WHERE id = $2',
+    [info, id]
+  );
   res.status(201).json(result.rows[0])
 })
 
