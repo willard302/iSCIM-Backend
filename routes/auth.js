@@ -74,13 +74,18 @@ router.post('/login', async(req, res) => {
 
     if (!isMatch) return res.status(401).json({message: "passwords do not match"});
 
+    const userInfo = await pool.query(
+      'SELECT * FROM users WHERE id = $1',
+      [user.id]
+    )
+
     const token = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET || 'default-secret',
       { expiresIn: '8h' }
     );
 
-    res.json({ message: '登入成功', token});
+    res.json({ message: 'success', success: true, token, info: userInfo});
   } catch (error) {
     res.status(500).json({ message: '伺服器錯誤'})
   }
