@@ -8,7 +8,7 @@ const pool = new Pool({
   }
 })
 
-client = pool.connect()
+const client = pool.connect()
   .then(() => console.log('✅ PostgreSQL connected'))
   .catch(err => console.error('❌ PostgreSQL connection error', err))
 
