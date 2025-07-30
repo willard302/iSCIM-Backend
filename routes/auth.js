@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const client = require('../db');
+const pool = require('../db');
 
 router.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -12,32 +12,32 @@ router.post('/register', async (req, res) => {
   };
 
   try {
-    await client.query('BEGIN');
+    await pool.query('BEGIN');
 
-    const checkUser = await client.query(
+    const checkUser = await pool.query(
       'SELECT * FROM auth WHERE username = $1',
       [username]
     );
 
     if (checkUser.rows.length > 0) {
-      await client.query("ROLLBACK")
+      await pool.query("ROLLBACK")
       return res.status(409).json({ error: 'User already exists' });
     };
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const authResult = await client.query(
+    const authResult = await pool.query(
       'INSERT INTO auth (username, password) VALUES ($1, $2) RETURNING id',
       [username, hashedPassword]
     );
     const authUser = authResult.rows[0];
 
-    await client.query(
+    await pool.query(
       'INSERT INTO users (id, email) VALUES ($1, $2)',
       [authUser.id, username]
     )
 
-    await client.query('COMMIT');
+    await pool.query('COMMIT');
 
     res.status(201).json({
       success: true,
@@ -45,7 +45,7 @@ router.post('/register', async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
+    await pool.query('ROLLBACK');
     console.error('Registration Error:', error);
     res.status(500).json({ error: 'Server Error' })
   }
@@ -55,7 +55,7 @@ router.post('/login', async(req, res) => {
   const {username, password} = req.body;
 
   try {
-    const result = await client.query(
+    const result = await pool.query(
       'SELECT * FROM auth WHERE username = $1',
       [username]
     );
@@ -69,7 +69,7 @@ router.post('/login', async(req, res) => {
 
     if (!isMatch) return res.status(401).json({message: "passwords do not match"});
 
-    const userInfo = await client.query(
+    const userInfo = await pool.query(
       'SELECT * FROM users WHERE id = $1',
       [user.id]
     )
