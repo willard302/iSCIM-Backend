@@ -1,8 +1,8 @@
 const express = require("express")
 const router = express.Router()
-const pool = require("../db.js")
+const client = require("../db.js")
 
-pool.query(`
+client.query(`
   CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name TEXT,
@@ -13,7 +13,7 @@ pool.query(`
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { rows } = await pool.query("SELECT * FROM users", [id]);
+    const { rows } = await client.query("SELECT * FROM users", [id]);
     res.json(rows);
   } catch (error) {
     console.error('Database error:', error);
@@ -24,7 +24,7 @@ router.get("/:id", async (req, res) => {
 router.post("/:id", async(req, res) => {
   const { id } = req.params;
   const { info } = req.body
-  const result = await pool.query(
+  const result = await client.query(
     'UPDATE users SET info = $1 WHERE id = $2',
     [info, id]
   );
@@ -33,7 +33,7 @@ router.post("/:id", async(req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params
-  await pool.query('DELETE FROM users WHERE id = $1', [id])
+  await client.query('DELETE FROM users WHERE id = $1', [id])
   res.sendStatus(204)
 })
 
