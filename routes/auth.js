@@ -8,7 +8,7 @@ router.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res.status(400).json({ error: '請填寫所有欄位' });
+    res.status(400).json({ error: 'Wrong account or password' });
   };
 
   try {
@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
 
     if (checkUser.rows.length > 0) {
       await pool.query("ROLLBACK")
-      return res.status(409).json({ error: '使用者已存在' });
+      return res.status(409).json({ error: 'User already exists' });
     };
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -40,17 +40,14 @@ router.post('/register', async (req, res) => {
     await pool.query('COMMIT');
 
     res.status(201).json({
-      message: '註冊成功',
-      user: {
-        auth: authUser,
-        username
-      }
+      success: true,
+      user: authResult
     });
 
   } catch (error) {
     await pool.query('ROLLBACK');
-    console.error('註冊錯誤:', error);
-    res.status(500).json({ error: '伺服器錯誤' })
+    console.error('Registration Error:', error);
+    res.status(500).json({ error: 'Server Error' })
   } finally {
     pool.release();
   }
@@ -85,9 +82,9 @@ router.post('/login', async(req, res) => {
       { expiresIn: '8h' }
     );
 
-    res.json({ message: 'success', success: true, token, info: userInfo});
+    res.json({ success: true, token, info: userInfo});
   } catch (error) {
-    res.status(500).json({ message: '伺服器錯誤'})
+    res.status(500).json({ message: 'Server Error'})
   }
 });
 

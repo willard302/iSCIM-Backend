@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('查詢商品失敗:', error);
-    res.status(500).json({ message: '伺服器錯誤' });
+    res.status(500).json({ message: 'Server Error' });
   }
 });
 
