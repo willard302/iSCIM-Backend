@@ -32,9 +32,11 @@ router.post('/register', async (req, res) => {
     );
     const authUser = authResult.rows[0];
 
+    const authUserInfo = {name: username, level: "Registered Member", avatra: "" };
+
     await pool.query(
-      'INSERT INTO users (id, email) VALUES ($1, $2)',
-      [authUser.id, username]
+      'INSERT INTO users (id, email, info) VALUES ($1, $2, $3)',
+      [authUser.id, username, authUserInfo]
     )
 
     await pool.query('COMMIT');
