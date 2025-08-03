@@ -10,18 +10,7 @@ pool.query(`
   );
 `);
 
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { rows } = await pool.query("SELECT * FROM users", [id]);
-//     res.json(rows);
-//   } catch (error) {
-//     console.error('Database error:', error);
-//     res.status(500).send("Database error");
-//   }
-// });
-
-router.post("/:id", async(req, res) => {
+router.put("/:id", async(req, res) => {
   const { id } = req.params;
   const { info } = req.body
   const result = await pool.query(
