@@ -1,0 +1,63 @@
+{
+  "cosmos":{
+    "numbers": [
+      {
+        "name": "Crash/Hesitation Index",
+        "permission": false,
+        "crashIndex": "",
+        "hesitationIndex": ""
+      },
+      {
+        "name": "Five Traits Ratio",
+        "permission": false
+      },
+      {
+        "name": "Body/Mind/Spirit Ratio",
+        "permission": false
+      },
+      {
+        "name": "Seven Chakras Chart",
+        "permission": false
+      },
+      {
+        "name": "Self Chakras Chart",
+        "permission": false
+      },
+      {
+        "name": "Whole Chakras Chart",
+        "permission": false
+      }
+    ],
+    "fiveElements": [
+      {
+        "name": "Aura",
+        "permission": false
+      },
+      {
+        "name": "Chakra State Ratio",
+        "permission": false
+      },
+      {
+        "name": "Five Elements Organ",
+        "permission": false
+      },
+      {
+        "name": "Viscera Ratio",
+        "permission": false
+      },
+      {
+        "name": "Five Elements Brain",
+        "permission": false
+      },
+      {
+        "name": "RECI Ratio",
+        "permission": false
+      },
+      {
+        "name": "SMB Ratio",
+        "permission": false
+      }
+    ]
+  },
+  "musicTherapy": false
+}

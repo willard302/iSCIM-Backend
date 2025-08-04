@@ -1,3 +1,4 @@
+import permission from "../data/permission.json";
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -35,8 +36,8 @@ router.post('/register', async (req, res) => {
     const authUserInfo = {name: username.split('@')[0], avatar: "" };
 
     await pool.query(
-      'INSERT INTO users (id, email, info, level) VALUES ($1, $2, $3, $4)',
-      [authUser.id, username, authUserInfo, 'Registered Member']
+      'INSERT INTO users (id, email, info, level, permission) VALUES ($1, $2, $3, $4, $5)',
+      [authUser.id, username, authUserInfo, 'Registered Member', permission]
     )
 
     await pool.query('COMMIT');
