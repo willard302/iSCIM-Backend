@@ -27,6 +27,22 @@ router.put("/info/:id", async(req, res) => {
   
 })
 
+router.put("/level/:id", async(req, res) => {
+  const { id } = req.params;
+  const { level } = req.body;
+
+  try {
+    const result = await pool.query(
+      'UPDATE users SET level = $1 WHERE id = $2 RETURNING *',
+      [level, id]
+    );
+    res.status(201).json(result.rows[0])
+  } catch (error) {
+    console.error(`🔥 Error in PUT /level/${id}`, error.message);
+    res.status(500).json({error: error.message})
+  }
+})
+
 router.delete("/:id", async (req, res) => {
   const { id } = req.params
   await pool.query('DELETE FROM users WHERE id = $1', [id])
