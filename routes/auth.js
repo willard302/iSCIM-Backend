@@ -32,12 +32,23 @@ router.post('/register', async (req, res) => {
       [username, hashedPassword]
     );
     const authUser = authResult.rows[0];
-
-    const authUserInfo = {name: username.split('@')[0], avatar: "" };
+    const name = username.split('@')[0];
+    const invitation = { code: name, link: `https://iscim666-e303d.web.app?iscim_code=${name}&openExternalBrowser=1` };
+    const creator = {
+      id: authUser.id,
+      info: { name: name, avatar: "" },
+      invitation: invitation,
+      ipoints: 0,
+      level: 'Registered Member',
+      members: ['default'],
+      permission: permission,
+      recommender: '',
+      username: username,
+    }
 
     await pool.query(
-      'INSERT INTO users (id, email, info, level, permission) VALUES ($1, $2, $3, $4, $5)',
-      [authUser.id, username, authUserInfo, 'Registered Member', permission]
+      'INSERT INTO users (id, info, invitation, ipoints, level, members, permission, recommender, username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+      [creator.id, creator.info, creator.invitation, creator.ipoints, creator.level, creator.members, creator.permission, creator.recommender, creator.username]
     )
 
     await pool.query('COMMIT');
