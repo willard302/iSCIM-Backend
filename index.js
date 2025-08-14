@@ -20,9 +20,11 @@ app.use(cors(corsOptions));
 const productRouter = require('./routes/products');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
+const membersRouter = require('./routes/members');
 app.use('/products', productRouter);
 app.use('/auth', authRouter);
-app.use('/users', userRouter)
+app.use('/users', userRouter);
+app.use('/members', membersRouter);
 
 const isDev = process.env.NODE_ENV === "production";
 

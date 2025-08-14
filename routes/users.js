@@ -19,7 +19,10 @@ router.put("/info/:id", async(req, res) => {
       'UPDATE users SET info = $1 WHERE id = $2 RETURNING *',
       [info, id]
     );
-    res.status(201).json(result.rows[0])  
+    res.status(201).json({
+      success: true,
+      result: result.rows[0]
+    })
   } catch (error) {
     console.error(`🔥 Error in PUT /info/${id}`, error.message);
     res.status(500).json({error: error.message})
@@ -36,7 +39,10 @@ router.put("/level/:id", async(req, res) => {
       'UPDATE users SET level = $1 WHERE id = $2 RETURNING *',
       [level, id]
     );
-    res.status(201).json(result.rows[0])
+    res.status(201).json({
+      success: true,
+      result: result.rows[0]
+    })
   } catch (error) {
     console.error(`🔥 Error in PUT /level/${id}`, error.message);
     res.status(500).json({error: error.message})
