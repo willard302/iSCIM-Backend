@@ -7,6 +7,7 @@ const { PORT = process.env.PORT } = process.env;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200kb" }));
+app.use(express.static("public"));
 
 const corsOptions = {
   origin: "*",
