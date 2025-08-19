@@ -19,7 +19,7 @@ router.put("/info/:id", async(req, res) => {
       'UPDATE users SET info = $1 WHERE id = $2 RETURNING *',
       [info, id]
     );
-    res.status(201).json({
+    res.status(200).json({ 
       success: true,
       result: result.rows[0]
     })
@@ -44,7 +44,7 @@ router.put("/level/:id", async(req, res) => {
       result: result.rows[0]
     })
   } catch (error) {
-    console.error(`🔥 Error in PUT /level/${id}`, error.message);
+    console.error(`🔥 Error in update level`, error.message);
     res.status(500).json({error: error.message})
   }
 })
@@ -58,9 +58,31 @@ router.put("/points/:id", async(req, res)=> {
       'UPDATE users SET iPoints = $1 WHERE id = $2 RETURNING *',
       [points, id]
     );
-    res.status(201).json(result.rows[0])
+    res.status(200).json({
+      success: true, 
+      result: result.rows[0]
+    })
   } catch (error) {
-    console.error(`🔥 Error in PUT /points/${id}`, error.message);
+    console.error(`🔥 Error in update points`, error.message);
+    res.status(500).json({error: error.message})
+  }
+})
+
+router.put("/tags/:id", async(req, res) => {
+  const { id } = req.params;
+  const { tags } = req.body;
+
+  try {
+    const result = await pool.query(
+      'UPDATE users SET tags = $1 WHERE id = $2 RETURNING *',
+      [tags, id]
+    );
+    res.status(200).json({ 
+      success: true, 
+      result: result.rows[0] 
+    })
+  } catch (error) {
+    console.error(`🔥 Error in update tags`, error.message);
     res.status(500).json({error: error.message})
   }
 })
