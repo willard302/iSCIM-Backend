@@ -55,13 +55,15 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      user: authResult
+      message: 'User registered successfully'
     });
 
   } catch (error) {
     await pool.query('ROLLBACK');
-    console.error('Registration Error:', error);
-    res.status(500).json({ error: 'Server Error' })
+    res.status(400).json({ 
+      success: false,
+      message: 'User registered failed',
+    });
   }
 })
 

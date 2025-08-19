@@ -1,6 +1,12 @@
-const express = require("express")
-const router = express.Router()
-const pool = require("../db.js")
+const express = require("express");
+const router = express.Router();
+const pool = require("../db.js");
+const allowedFields = { 
+  info: "info", 
+  level: "level", 
+  points: "iPoints", 
+  tags: "tags"
+};
 
 pool.query(`
   CREATE TABLE IF NOT EXISTS users (
@@ -10,82 +16,39 @@ pool.query(`
   );
 `);
 
-router.put("/info/:id", async(req, res) => {
+router.put("/users/:id", async (req, res) => {
   const { id } = req.params;
-  const { info } = req.body;
+  const updates = req.body;
 
-  try {
-    const result = await pool.query(
-      'UPDATE users SET info = $1 WHERE id = $2 RETURNING *',
-      [info, id]
-    );
-    res.status(200).json({ 
-      success: true,
-      result: result.rows[0]
+  const fields = Object.keys(updates).filter((key) => allowedFields[key]);
+
+  if (fields.length === 0) {
+    return res.status(400).json({
+      error: "No valid fields to update"
     })
-  } catch (error) {
-    console.error(`🔥 Error in PUT /info/${id}`, error.message);
-    res.status(500).json({error: error.message})
   }
-  
-})
+});
 
-router.put("/level/:id", async(req, res) => {
-  const { id } = req.params;
-  const { level } = req.body;
+const setClauses = fields.map(
+  (key, idx) => `${allowedFields[key]} = $${idx + 1}`
+);
 
-  try {
-    const result = await pool.query(
-      'UPDATE users SET level = $1 WHERE id = $2 RETURNING *',
-      [level, id]
-    );
-    res.status(201).json({
-      success: true,
-      result: result.rows[0]
-    })
-  } catch (error) {
-    console.error(`🔥 Error in update level`, error.message);
-    res.status(500).json({error: error.message})
-  }
-})
+const values = fields.map((keu) => updates[key]);
 
-router.put("/points/:id", async(req, res)=> {
-  const { id } = req.params;
-  const { points } = req.body;
+try {
+  const result = await pool.query(
+    `UPDATE users SET ${setClauses.join(", ")} WHERE id = $${fields.length + 1} RETURNING *`,
+    [...values, id]
+  );
 
-  try {
-    const result = await pool.query(
-      'UPDATE users SET iPoints = $1 WHERE id = $2 RETURNING *',
-      [points, id]
-    );
-    res.status(200).json({
-      success: true, 
-      result: result.rows[0]
-    })
-  } catch (error) {
-    console.error(`🔥 Error in update points`, error.message);
-    res.status(500).json({error: error.message})
-  }
-})
-
-router.put("/tags/:id", async(req, res) => {
-  const { id } = req.params;
-  const { tags } = req.body;
-
-  try {
-    const result = await pool.query(
-      'UPDATE users SET tags = $1 WHERE id = $2 RETURNING *',
-      [tags, id]
-    );
-    res.status(200).json({ 
-      success: true, 
-      result: result.rows[0] 
-    })
-  } catch (error) {
-    console.error(`🔥 Error in update tags`, error.message);
-    res.status(500).json({error: error.message})
-  }
-})
+  res.status(200).json({
+    success: true,
+    result: result.rows[0]
+  });
+} catch (error) {
+  console.error("🔥 Error in update users", error.message);
+  res.status(500).json({ error: error.message });
+}
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params
